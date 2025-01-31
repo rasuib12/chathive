@@ -26,6 +26,7 @@ model Profile {
   updatedAt DateTime @updatedAt
 
   Server Server[]
+  Member Member[]
 }
 
 model Server {
@@ -38,4 +39,22 @@ model Server {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Member    Member[]
+}
+
+enum MemberRoles {                      //enum is used to have predefined set of value in prisma schema
+  Administrator
+  Moderator
+  Member
+}
+
+model Member {
+  id         String     @id @default(uuid())
+  role       MemberRoles @default(Member)
+  profile    Profile    @relation(fields: [profileId], references: [id])
+  profileId  String
+  server     Server     @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  serverId   String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 }
