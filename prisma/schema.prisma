@@ -1,0 +1,31 @@
+// Key requirements for the  Model: 
+//                 Profile:For the user Profile;
+//                 Server: For the server in which the users actually interact in;
+//                 Member: Each server has members, and each member has a one of 3  roles in the server which are:
+//                         1)Administrator: This user has absolute power and can kick,ban, and promote other members and also has full access to server settings;
+//                         2)Mod: This user has the power to kick,ban, and promote other members but does not have access to server settings;
+//                         3)Member: This user has no power and can only chat in the server;                   
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id     String @id @default(uuid())
+  userId String @unique
+  name   String
+  email  String @unique @db.Text
+
+  
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+}
+
+
