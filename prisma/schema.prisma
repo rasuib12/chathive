@@ -40,6 +40,8 @@ model Server {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Member    Member[]
+
+  @@index([profileId])
 }
 
 enum MemberRoles {                      //enum is used to have predefined set of value in prisma schema
@@ -49,12 +51,13 @@ enum MemberRoles {                      //enum is used to have predefined set of
 }
 
 model Member {
-  id         String     @id @default(uuid())
-  role       MemberRoles @default(Member)
-  profile    Profile    @relation(fields: [profileId], references: [id])
+  id         String       @id @default(uuid())
+  role       MemberRoles  @default(Member)
+  profile    Profile      @relation(fields: [profileId], references: [id],onDelete: Cascade)
   profileId  String
-  server     Server     @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  server     Server       @relation(fields: [serverId], references: [id], onDelete: Cascade)
   serverId   String
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  @@index([profileId, serverId])
 }
